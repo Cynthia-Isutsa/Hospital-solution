@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/lib/theme-providers";
+import { ThemeProvider } from "@/components/theme-providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
