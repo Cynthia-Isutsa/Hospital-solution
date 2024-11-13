@@ -1,37 +1,40 @@
+"use client"
+
 import React from 'react'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { Input } from './ui/input'
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Control } from 'react-hook-form'
+import { FormFieldType } from './forms/PatientForm'
 
-const CustomFormField = () => {
-    const formSchema = z.object({
-        username: z.string().min(2, {
-          message: "Username must be at least 2 characters.",
-        }),
-      })
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          username: "",
-        },
-      });
-
+interface CustomProps {
+    control: Control<any>,
+    description?: string,
+    placeholder: string,
+    label: string,
+    name:string
+  fieldType: FormFieldType;
+}
+const CustomFormField = ({control, description, placeholder, label, name, fieldType}: CustomProps) => {
+ 
   return (
     <FormField
-    control={form.control}
-    name="username"
+    control={control}
+    name={name}
     render={({ field }) => (
-      <FormItem>
-        <FormLabel>Username</FormLabel>
+      <FormItem className="flex-1">
+        {fieldType !== FormFieldType.CHECKBOX && label ? (
+         <FormLabel>{label}</FormLabel>
+        ) : (
+          <textarea placeholder={placeholder} {...field} />
+        )}
+        {/* <FormLabel>{label}</FormLabel>
         <FormControl>
-          <Input placeholder="shadcn" {...field} />
+          <Input placeholder={placeholder} {...field} />
         </FormControl>
         <FormDescription>
-          This is your public display name.
+          {description}
         </FormDescription>
-        <FormMessage />
+        <FormMessage /> */}
       </FormItem>
     )}
   />

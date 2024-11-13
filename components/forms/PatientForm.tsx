@@ -8,6 +8,7 @@ import {
   Form,
 
 } from "@/components/ui/form"
+import CustomFormField from "../CustomFormField";
 
 
 const formSchema = z.object({
@@ -15,6 +16,14 @@ const formSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
 });
+
+export enum FormFieldType {
+  INPUT = "input",
+  TEXTAREA = "textarea",
+  PHONE_INPUT = "phoneInput",
+  CHECKBOX = "checkbox",
+
+}
 
 const PatientForm = () => {
   // 1. Define your form.
@@ -39,8 +48,34 @@ const PatientForm = () => {
           <h1 className="header">Hi there 👋</h1>
           <p className="text-dark-700">Schedule your appointments.</p>
         </section>
-     
-      <Button type="submit">Submit</Button>
+     <CustomFormField  
+     control={form.control}
+     description="This is your public display name."
+     placeholder="Enter Name ..."
+     label="Username"
+     name="userName"
+    fieldType={FormFieldType.INPUT}
+    iconSrc="/icons/user.svg"
+     iconAlt="user"
+     />
+     <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          control={form.control}
+          name="email"
+          label="Email"
+          placeholder="johndoe@gmail.com"
+          iconSrc="/icons/email.svg"
+          iconAlt="email"
+        />
+
+        <CustomFormField
+          fieldType={FormFieldType.PHONE_INPUT}
+          control={form.control}
+          name="phone"
+          label="Phone number"
+          placeholder="(555) 123-4567"
+        />
+      <Button type="submit">Get started</Button>
     </form>
   </Form>
   )
