@@ -7,6 +7,7 @@ declare type SearchParamProps = {
   
   declare type Gender = "Male" | "Female" | "Other";
   declare type Status = "pending" | "scheduled" | "cancelled";
+  declare type IdentificationType = "Passport" | "NationalId";
   
   declare interface CreateUserParams {
     name: string;
@@ -32,7 +33,7 @@ declare type SearchParamProps = {
     currentMedication: string | undefined;
     familyMedicalHistory: string | undefined;
     pastMedicalHistory: string | undefined;
-    identificationType: string | undefined;
+    identificationType: IdentificationType;
     identificationNumber: string | undefined;
     identificationDocument: FormData | undefined;
     privacyConsent: boolean;

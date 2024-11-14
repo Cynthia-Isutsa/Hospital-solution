@@ -3,16 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-
-} from "@/components/ui/form"
+import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import UserFormValidation from "@/lib/validation";
 import { useRouter } from "next/navigation";
-
+import { createUser } from "@/lib/actions/patient.actions";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -21,19 +18,18 @@ export enum FormFieldType {
   CHECKBOX = "checkbox",
   DATE_PICKER = "datePicker",
   SELECT = "select",
-  SKELETON ="skeleton"
-
+  SKELETON = "skeleton",
 }
 
 const PatientForm = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-    name: "",
-    email: "",
-    phone: "",
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
@@ -41,18 +37,19 @@ const PatientForm = () => {
   async function onSubmit(values: z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
     try {
-      // const UserData = {
-      //   name: values.name,
-      //   email: values.email,
-      //   phone: values.phone,
-      // };
+      const UserData = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+      };
 
-      // console.log({UserData});
+      console.log({ UserData });
 
-      // const user = await createUser(UserData);
-      // if (user) {
-      //   router.push(`/patients/${user.id}/register`);
-      // }
+      const user = await createUser(UserData);
+      console.log({ user });
+      if (user) {
+        router.push(`/patients/${user.$id}/register`);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -61,21 +58,21 @@ const PatientForm = () => {
 
   return (
     <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-    <section className="mb-12 space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
+        <section className="mb-12 space-y-4">
           <h1 className="header">Hi there 👋</h1>
           <p className="text-dark-700">Schedule your appointments.</p>
         </section>
-     <CustomFormField  
-     control={form.control}
-     placeholder="Enter Name ..."
-     label="Username"
-     name="userName"
-    fieldType={FormFieldType.INPUT}
-    iconSrc="/icons/user.svg"
-     iconAlt="user"
-     />
-     <CustomFormField
+        <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          control={form.control}
+          name="name"
+          label="Full name"
+          placeholder="John Doe"
+          iconSrc="/icons/user.svg"
+          iconAlt="user"
+        />
+        <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
           name="email"
@@ -92,10 +89,10 @@ const PatientForm = () => {
           label="Phone number"
           placeholder="(+254) 727998800"
         />
-      <SubmitButton isLoading = {isLoading}>Get Started</SubmitButton>
-    </form>
-  </Form>
-  )
+        <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
+      </form>
+    </Form>
+  );
 };
 
 export default PatientForm;
